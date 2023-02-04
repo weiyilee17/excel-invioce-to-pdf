@@ -1,16 +1,24 @@
-# This is a sample Python script.
+from pandas import read_excel
+from glob import glob
+from fpdf import FPDF
+from pathlib import Path
 
-# Press ⌥⇧R to execute it or replace it with your code.
-# Press Double ⇧ to search everywhere for classes, files, tool windows, actions, and settings.
+file_paths = glob('invoices/*xlsx')
 
+for single_file_path in file_paths:
+    data_frame = read_excel(single_file_path, sheet_name='Sheet 1')
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press ⌃' to toggle the breakpoint.
+    pdf = FPDF(orientation='P', unit='mm', format='A4')
 
+    pdf.add_page()
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+    file_name = Path(single_file_path).stem
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    invoice_number, date = file_name.split('-')
+
+    pdf.set_font(family='Times', size=16, style='B')
+    pdf.cell(w=50, h=8, txt=f'Invoice number. {invoice_number}', ln=1)
+    pdf.cell(w=50, h=8, txt=f'Date {date}', ln=1)
+
+    pdf.output(f'PDFs/{file_name}.pdf')
+
