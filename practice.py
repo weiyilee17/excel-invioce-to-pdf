@@ -17,7 +17,7 @@ for single_file_path in file_paths:
     with open(single_file_path, 'r') as file:
         content = file.read()
 
-        pdf.set_font(family='Times', style='B', size=8)
-        pdf.multi_cell(w=0, h=8, txt=content)
+        pdf.set_font(family='Times', style='B', size=12)
+        pdf.multi_cell(w=0, h=6, txt=content)
 
 pdf.output('compacted.pdf')
